@@ -35,6 +35,7 @@ export type TOrdersData = {
 export type TUser = {
   email: string;
   name: string;
+  token: string;
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';

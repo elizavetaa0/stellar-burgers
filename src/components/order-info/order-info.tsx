@@ -1,23 +1,26 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { RootState } from '../../services/store';
+import { ThunkDispatch } from 'redux-thunk';
+import { fetchOrderById } from '../../slices/orderSlice';
+import { Modal } from '@components';
+import { useLocation } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const orderData = useSelector((state: RootState) => state.order.currentOrder);
+  const ingredients = useSelector(
+    (state: RootState) => state.ingredients.ingredients
+  );
 
-  const ingredients: TIngredient[] = [];
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  /* Готовим данные для отображения */
+  const location = useLocation();
+  const orderNumber = location.pathname.split('/').pop();
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -59,9 +62,26 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
+  useEffect(() => {
+    if (orderNumber) {
+      dispatch(fetchOrderById(parseInt(orderNumber)));
+    }
+  }, [dispatch, orderNumber]);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   if (!orderInfo) {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <>
+      <OrderInfoUI orderInfo={orderInfo} />
+      {isModalOpen && (
+        <Modal onClose={closeModal} title={'Подробная информация о заказе'} />
+      )}
+    </>
+  );
 };
