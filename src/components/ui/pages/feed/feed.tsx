@@ -1,19 +1,26 @@
-import React, { FC, memo } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { FC, memo, useEffect, useState } from 'react';
+import { useDispatch } from '../../../../services/store';
 import { RefreshButton } from '@zlden/react-developer-burger-ui-components';
 
 import styles from './feed.module.css';
 import { FeedUIProps } from './type';
 import { OrdersList, FeedInfo } from '@components';
 import { fetchFeeds } from '../../../../slices/feedsSlice';
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from 'src/services/store';
 
 export const FeedUI: FC<FeedUIProps> = memo(({ orders }) => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const [isFetching, setIsFetching] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleGetFeeds = () => {
-    dispatch(fetchFeeds());
+  useEffect(() => {
+    if (isFetching) {
+      dispatch(fetchFeeds()).then(() => {
+        setIsFetching(false);
+      });
+    }
+  }, [dispatch, isFetching]);
+
+  const handleClickRefresh = () => {
+    setIsFetching(true);
   };
 
   return (
@@ -24,7 +31,7 @@ export const FeedUI: FC<FeedUIProps> = memo(({ orders }) => {
         </h1>
         <RefreshButton
           text='Обновить'
-          onClick={handleGetFeeds}
+          onClick={handleClickRefresh}
           extraClass={'ml-30'}
         />
       </div>

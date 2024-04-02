@@ -95,15 +95,11 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
-  async (userData: TLoginData, { dispatch }) => {
-    try {
-      const response = await loginUserApi(userData);
-      const { user, accessToken, refreshToken } = response;
-      saveUserAndTokens(user, accessToken, refreshToken);
-      return user;
-    } catch (error: any) {
-      throw error;
-    }
+  async (userData: TLoginData) => {
+    const response = await loginUserApi(userData);
+    const { user, accessToken, refreshToken } = response;
+    saveUserAndTokens(user, accessToken, refreshToken);
+    return user;
   }
 );
 
@@ -115,36 +111,17 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk(
-  'auth/logoutUser',
-  async (_, { dispatch }) => {
-    const accessToken = getCookie('accessToken');
-    if (!accessToken) {
-      dispatch(userLogout());
-      return;
-    }
-
-    try {
-      await logoutApi();
-      localStorage.clear();
-      deleteCookie('accessToken');
-      dispatch(userLogout());
-    } catch (error) {
-      console.error('Ошибка выполнения выхода:', error);
-      throw error;
-    }
-  }
-);
+export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+  await logoutApi();
+  localStorage.clear();
+  deleteCookie('accessToken');
+});
 
 export const refreshUserToken = createAsyncThunk(
   'auth/refreshUserToken',
   async () => {
-    try {
-      const response = await refreshToken();
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await refreshToken();
+    return response;
   }
 );
 

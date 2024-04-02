@@ -3,17 +3,10 @@ import ReactDOM from 'react-dom';
 
 import { TModalProps } from './type';
 import { ModalUI } from '@ui';
-import { useNavigate } from 'react-router-dom';
 
 const modalRoot = document.getElementById('modals');
 
-export const Modal: FC<TModalProps> = memo(({ title, children }) => {
-  const navigate = useNavigate();
-
-  const onClose = () => {
-    navigate(-1);
-  };
-
+export const Modal: FC<TModalProps> = memo(({ title, children, onClose }) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       e.key === 'Escape' && onClose();

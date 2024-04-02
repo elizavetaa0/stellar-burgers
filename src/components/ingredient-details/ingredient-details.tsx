@@ -1,23 +1,18 @@
-import React, { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'src/services/store';
-import { fetchIngredients } from '../../slices/ingredientsSlice';
+import React, { FC, useState } from 'react';
+import { useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
-import { ThunkDispatch } from 'redux-thunk';
 import { useParams } from 'react-router-dom';
+import { Modal } from '../modal';
 
 export const IngredientDetails: FC = () => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
   const { ingredients, loading, error } = useSelector(
-    (state: RootState) => state.ingredients
+    (state) => state.ingredients
   );
 
-  const { id } = useParams<{ id: string }>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
+  const { id } = useParams<{ id: string }>();
 
   if (loading) {
     return <Preloader />;
@@ -35,5 +30,21 @@ export const IngredientDetails: FC = () => {
     return <div>Нет информации об ингредиенте</div>;
   }
 
-  return <IngredientDetailsUI ingredientData={ingredientData} />;
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  return (
+    <>
+      {isModalOpen && (
+        <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
+          <IngredientDetailsUI ingredientData={ingredientData} />
+        </Modal>
+      )}
+    </>
+  );
 };

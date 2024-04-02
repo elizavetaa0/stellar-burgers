@@ -7,18 +7,19 @@ import {
   AddButton
 } from '@zlden/react-developer-burger-ui-components';
 import { TBurgerIngredientUIProps } from './type';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../services/store';
 import { addIngredientToConstructor } from '../../../slices/orderSlice';
-import { RootState } from 'src/services/store';
+import { Modal } from '../../../components/modal';
+import { IngredientDetailsUI } from '../ingredient-details';
 
 export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
   ({ ingredient, locationState }) => {
     const dispatch = useDispatch();
     const { image, price, name, _id } = ingredient;
 
-    const [added, setAdded] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const constructorItems = useSelector(
-      (state: RootState) => state.order.constructorItems
+      (state) => state.order.constructorItems
     );
 
     const isInConstructor = constructorItems.ingredients.some(
@@ -27,7 +28,6 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
 
     const handleAdd = () => {
       dispatch(addIngredientToConstructor(ingredient));
-      setAdded(true);
     };
 
     let bunCount = 0;
@@ -44,29 +44,26 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
       displayCount = ingredientCount + bunCount;
     }
 
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
+
     return (
       <div className={styles.container} key={_id}>
-        <Link
-          className={styles.article}
-          to={`/ingredients/${_id}`}
-          state={locationState}
-        >
-          <div className={styles.article}>
-            {displayCount > 0 && <Counter count={displayCount} />}
-            <img
-              className={styles.img}
-              src={image}
-              alt='картинка ингредиента.'
-            />
-            <div className={`${styles.cost} mt-2 mb-2`}>
-              <p className='text text_type_digits-default mr-2'>{price}</p>
-              <CurrencyIcon type='primary' />
-            </div>
-            <p className={`text text_type_main-default ${styles.text}`}>
-              {name}
-            </p>
+        <div className={styles.article} onClick={handleOpenModal}>
+          {displayCount > 0 && <Counter count={displayCount} />}
+          <img className={styles.img} src={image} alt='картинка ингредиента.' />
+          <div className={`${styles.cost} mt-2 mb-2`}>
+            <p className='text text_type_digits-default mr-2'>{price}</p>
+            <CurrencyIcon type='primary' />
           </div>
-        </Link>
+          <p className={`text text_type_main-default ${styles.text}`}>{name}</p>
+        </div>
+
         <AddButton
           text='Добавить'
           onClick={() => {
@@ -78,6 +75,12 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
           }}
           extraClass={`${styles.addButton} mt-8`}
         />
+
+        {isModalOpen && (
+          <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
+            <IngredientDetailsUI ingredientData={ingredient} />
+          </Modal>
+        )}
       </div>
     );
   }

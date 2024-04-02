@@ -1,26 +1,23 @@
 import { useState, useRef, useEffect, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { ThunkDispatch } from 'redux-thunk';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { fetchIngredients } from '../../slices/ingredientsSlice';
-import { RootState } from 'src/services/store';
 import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
-  const buns = useSelector((state: RootState) =>
+  const dispatch = useDispatch();
+  const buns = useSelector((state) =>
     state.ingredients.ingredients.filter((item) => item.type === 'bun')
   );
-  const mains = useSelector((state: RootState) =>
+  const mains = useSelector((state) =>
     state.ingredients.ingredients.filter((item) => item.type === 'main')
   );
-  const sauces = useSelector((state: RootState) =>
+  const sauces = useSelector((state) =>
     state.ingredients.ingredients.filter((item) => item.type === 'sauce')
   );
-  const loading = useSelector((state: RootState) => state.ingredients.loading);
-  const error = useSelector((state: RootState) => state.ingredients.error);
+  const loading = useSelector((state) => state.ingredients.loading);
+  const error = useSelector((state) => state.ingredients.error);
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
@@ -38,10 +35,6 @@ export const BurgerIngredients: FC = () => {
   const [saucesRef, inViewSauces] = useInView({
     threshold: 0
   });
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
 
   useEffect(() => {
     if (inViewBuns) {

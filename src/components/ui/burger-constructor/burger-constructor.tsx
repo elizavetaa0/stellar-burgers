@@ -10,10 +10,8 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
 import { clearConstructor, createOrder } from '../../../slices/orderSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
-import { ThunkDispatch } from 'redux-thunk';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../../services/store';
+import { useNavigate } from 'react-router-dom';
 import {
   checkUserAuth,
   isAuthCheckedSelector,
@@ -25,7 +23,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   price,
   closeOrderModal
 }) => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const dispatch = useDispatch();
   const user = useSelector(userDataSelector);
   const isAuthChecked = useSelector(isAuthCheckedSelector);
   const navigate = useNavigate();
@@ -37,12 +35,8 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   }, [dispatch, isAuthChecked]);
 
   const selectedBun = constructorItems.bun;
-  const orderRequest = useSelector(
-    (state: RootState) => state.order.orderRequest
-  );
-  const orderModalData = useSelector(
-    (state: RootState) => state.order.orderModalData
-  );
+  const orderRequest = useSelector((state) => state.order.orderRequest);
+  const orderModalData = useSelector((state) => state.order.orderModalData);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +65,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         ingredient={item}
         index={index}
         totalItems={constructorItems.ingredients.length}
-        key={`${item.id}_${index}`}
+        key={item.id}
       />
     )
   );
@@ -134,7 +128,6 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     setIsModalOpen(false);
     closeOrderModal();
     setError(null);
-    navigate('/feed');
   };
 
   return (
@@ -176,7 +169,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       )}
 
       {orderRequest && (
-        <Modal onClose={() => {}} title={'Оформляем заказ...'}>
+        <Modal onClose={closeModal} title={'Оформляем заказ...'}>
           <Preloader />
         </Modal>
       )}

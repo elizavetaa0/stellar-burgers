@@ -80,12 +80,14 @@ const orderSlice = createSlice({
     removeIngredients: (state, action) => {
       const ingredientToRemove = action.payload;
       if (ingredientToRemove.type !== 'bun') {
-        state.constructorItems.ingredients =
-          state.constructorItems.ingredients.filter(
-            (ingredient) => ingredient._id !== ingredientToRemove._id
-          );
+        const indexToRemove = state.constructorItems.ingredients.findIndex(
+          (ingredient) => ingredient._id === ingredientToRemove._id
+        );
+        if (indexToRemove !== -1) {
+          state.constructorItems.ingredients.splice(indexToRemove, 1);
+          state.constructorItems.counter--;
+        }
       }
-      state.constructorItems.counter--;
     }
   },
   extraReducers: (builder) => {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from '../../services/store';
@@ -13,18 +13,21 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
+import { AppHeader, OrderInfo, IngredientDetails, Modal } from '@components';
 import ProtectedRoute from '../protected-route/protected-route';
 import { checkUserAuth } from '../../slices/authSlice';
+import { fetchIngredients } from '../../slices/ingredientsSlice';
+import styles from './app.module.css';
 
 const App = () => {
   useEffect(() => {
     store.dispatch(checkUserAuth());
+    store.dispatch(fetchIngredients());
   }, []);
 
   return (
     <Provider store={store}>
-      <div className='app'>
+      <div className={styles.app}>
         <BrowserRouter>
           <AppHeader />
           <Routes>
@@ -33,27 +36,30 @@ const App = () => {
             <Route
               path='/feed/:number'
               element={
-                <Modal title={'Информация о заказе'} onClose={() => {}}>
+                <Modal
+                  title={'Информация о заказе'}
+                  onClose={() => {
+                    window.location.href = '/feed';
+                  }}
+                >
                   <OrderInfo />
                 </Modal>
               }
             />
-            <Route
-              path='/ingredients/:id'
-              element={
-                <Modal title={'Детали ингредиента'} onClose={() => {}}>
-                  <IngredientDetails />
-                </Modal>
-              }
-            />
+            <Route path='/ingredients/:id' element={<IngredientDetails />} />
             <Route
               path='/profile/orders/:number'
               element={
-                <ProtectedRoute>
-                  <Modal title={'Информация о заказе'} onClose={() => {}}>
+                <Modal
+                  title={'Информация о заказе'}
+                  onClose={() => {
+                    window.location.href = '/profile/orders';
+                  }}
+                >
+                  <ProtectedRoute>
                     <OrderInfo />
-                  </Modal>
-                </ProtectedRoute>
+                  </ProtectedRoute>
+                </Modal>
               }
             />
             <Route

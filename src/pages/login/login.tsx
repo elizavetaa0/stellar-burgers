@@ -1,9 +1,7 @@
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { loginUser } from '../../slices/authSlice';
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from 'src/services/store';
 import { Navigate } from 'react-router-dom';
 import { setUser, userDataSelector } from '../../slices/authSlice';
 
@@ -12,7 +10,7 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState('');
   const [redirectToConstructor, setRedirectToConstructor] = useState(false);
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const dispatch = useDispatch();
   const userData = useSelector(userDataSelector);
 
   const handleSubmit = async (e: SyntheticEvent) => {

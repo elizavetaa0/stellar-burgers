@@ -4,9 +4,7 @@ import styles from './profile.module.css';
 import commonStyles from '../common.module.css';
 import { ProfileUIProps } from './type';
 import { ProfileMenu } from '@components';
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from 'src/services/store';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../../services/store';
 import { updateUser, setUser } from '../../../../slices/authSlice';
 
 export const ProfileUI: FC<ProfileUIProps> = ({
@@ -17,7 +15,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
   handleInputChange
 }) => {
   const [isSaving, setIsSaving] = useState(false);
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();

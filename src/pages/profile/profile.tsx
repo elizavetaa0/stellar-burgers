@@ -1,13 +1,11 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from 'src/services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { fetchUser } from '../../slices/authSlice';
 
 export const Profile: FC = () => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     dispatch(fetchUser());

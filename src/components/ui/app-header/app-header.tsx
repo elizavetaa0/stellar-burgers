@@ -8,7 +8,7 @@ import {
   ProfileIcon
 } from '@zlden/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../services/store';
 import { userDataSelector } from '../../../slices/authSlice';
 
 export const AppHeaderUI: FC<TAppHeaderUIProps> = () => {

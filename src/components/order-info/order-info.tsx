@@ -1,22 +1,15 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { RootState } from '../../services/store';
-import { ThunkDispatch } from 'redux-thunk';
 import { fetchOrderById } from '../../slices/orderSlice';
-import { Modal } from '@components';
 import { useLocation } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
-  const orderData = useSelector((state: RootState) => state.order.currentOrder);
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredients.ingredients
-  );
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const orderData = useSelector((state) => state.order.currentOrder);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
   const location = useLocation();
   const orderNumber = location.pathname.split('/').pop();
@@ -68,10 +61,6 @@ export const OrderInfo: FC = () => {
     }
   }, [dispatch, orderNumber]);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   if (!orderInfo) {
     return <Preloader />;
   }
@@ -79,9 +68,8 @@ export const OrderInfo: FC = () => {
   return (
     <>
       <OrderInfoUI orderInfo={orderInfo} />
-      {isModalOpen && (
-        <Modal onClose={closeModal} title={'Подробная информация о заказе'} />
-      )}
     </>
   );
 };
+
+export default OrderInfo;

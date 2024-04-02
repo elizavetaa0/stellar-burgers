@@ -23,12 +23,8 @@ const initialState: FeedsState = {
 };
 
 export const fetchFeeds = createAsyncThunk('feeds/fetchFeeds', async () => {
-  try {
-    const response = await getFeedsApi();
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  const response = await getFeedsApi();
+  return response;
 });
 
 const feedsSlice = createSlice({

@@ -1,9 +1,7 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { registerUser } from '../../slices/authSlice';
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from 'src/services/store';
 import { Navigate } from 'react-router-dom';
 
 export const Register: FC = () => {
@@ -12,7 +10,7 @@ export const Register: FC = () => {
   const [password, setPassword] = useState('');
   const [errorText, setErrorText] = useState('');
   const [redirectToConstructor, setRedirectToConstructor] = useState(false);
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();

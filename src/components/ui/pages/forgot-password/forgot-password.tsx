@@ -2,11 +2,9 @@ import React, { FC, useState } from 'react';
 import { Input, Button } from '@zlden/react-developer-burger-ui-components';
 import styles from '../common.module.css';
 import { PageUIProps } from '../common-type';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../../services/store';
 import { forgotPassword } from '../../../../slices/authSlice';
 import { Link, Navigate } from 'react-router-dom';
-import { RootState } from 'src/services/store';
-import { ThunkDispatch } from 'redux-thunk';
 
 export const ForgotPasswordUI: FC<PageUIProps> = ({
   errorText,
@@ -15,7 +13,7 @@ export const ForgotPasswordUI: FC<PageUIProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [resetRequested, setResetRequested] = useState(false);
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

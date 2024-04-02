@@ -2,21 +2,16 @@ import { FC, useMemo, useState } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { RootState } from 'src/services/store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/store';
 import { clearConstructor, createOrder } from '../../slices/orderSlice';
-import { ThunkDispatch } from 'redux-thunk';
 
 export const BurgerConstructor: FC = () => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
+  const dispatch = useDispatch();
   const constructorItems = useSelector(
     (state: RootState) => state.order.constructorItems
   );
-  const orderRequest = useSelector(
-    (state: RootState) => state.order.orderRequest
-  );
-  const orderModalData = useSelector(
-    (state: RootState) => state.order.orderModalData
-  );
+  const orderRequest = useSelector((state) => state.order.orderRequest);
+  const orderModalData = useSelector((state) => state.order.orderModalData);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

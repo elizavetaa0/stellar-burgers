@@ -2,19 +2,21 @@ import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { fetchOrders } from '../../slices/orderSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
-import { ThunkDispatch } from 'redux-thunk';
+import { useDispatch, useSelector } from '../../services/store';
+import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
-  const dispatch: ThunkDispatch<RootState, void, any> = useDispatch();
-  const orders: TOrder[] = useSelector(
-    (state: RootState) => state.order.orders
-  );
+  const dispatch = useDispatch();
+  const orders: TOrder[] = useSelector((state) => state.order.orders);
+  const isLoading: boolean = useSelector((state) => state.order.loading);
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
+
+  if (isLoading) {
+    return <Preloader />;
+  }
 
   return <ProfileOrdersUI orders={orders} />;
 };
