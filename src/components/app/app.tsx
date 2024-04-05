@@ -13,7 +13,7 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import { AppHeader, OrderInfo, IngredientDetails, Modal } from '@components';
+import { AppHeader, OrderInfo, IngredientDetails } from '@components';
 import ProtectedRoute from '../protected-route/protected-route';
 import { checkUserAuth } from '../../slices/authSlice';
 import { fetchIngredients } from '../../slices/ingredientsSlice';
@@ -33,33 +33,14 @@ const App = () => {
           <Routes>
             <Route path='/' element={<ConstructorPage />} />
             <Route path='/feed' element={<Feed />} />
-            <Route
-              path='/feed/:number'
-              element={
-                <Modal
-                  title={'Информация о заказе'}
-                  onClose={() => {
-                    window.location.href = '/feed';
-                  }}
-                >
-                  <OrderInfo />
-                </Modal>
-              }
-            />
+            <Route path='/feed/:number' element={<OrderInfo />} />
             <Route path='/ingredients/:id' element={<IngredientDetails />} />
             <Route
               path='/profile/orders/:number'
               element={
-                <Modal
-                  title={'Информация о заказе'}
-                  onClose={() => {
-                    window.location.href = '/profile/orders';
-                  }}
-                >
-                  <ProtectedRoute>
-                    <OrderInfo />
-                  </ProtectedRoute>
-                </Modal>
+                <ProtectedRoute>
+                  <OrderInfo />
+                </ProtectedRoute>
               }
             />
             <Route

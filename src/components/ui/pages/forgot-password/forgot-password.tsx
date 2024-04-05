@@ -20,6 +20,7 @@ export const ForgotPasswordUI: FC<PageUIProps> = ({
     setLoading(true);
     try {
       await dispatch(forgotPassword(email));
+      localStorage.setItem('resetPassword', 'true');
       setResetRequested(true);
     } catch (error) {
       console.error('Forgot password error:', error);

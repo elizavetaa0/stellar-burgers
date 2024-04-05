@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
@@ -6,13 +6,35 @@ import { TIngredient } from '@utils-types';
 import { fetchOrderById } from '../../slices/orderSlice';
 import { useLocation } from 'react-router-dom';
 
-export const OrderInfo: FC = () => {
+interface OrderInfoProps {
+  orderNumber?: number;
+}
+
+export const OrderInfo: FC<OrderInfoProps> = ({ orderNumber }) => {
   const dispatch = useDispatch();
   const orderData = useSelector((state) => state.order.currentOrder);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
-
   const location = useLocation();
-  const orderNumber = location.pathname.split('/').pop();
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    let orderIdFromUrl = '';
+    const pathParts = location.pathname.split('/');
+    if (pathParts.length > 2) {
+      orderIdFromUrl = pathParts[pathParts.length - 1];
+    }
+
+    const orderId = orderNumber || orderIdFromUrl;
+
+    if (orderId) {
+      dispatch(fetchOrderById(orderId as number));
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  }, [dispatch, orderNumber, location.pathname]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
@@ -55,21 +77,11 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  useEffect(() => {
-    if (orderNumber) {
-      dispatch(fetchOrderById(parseInt(orderNumber)));
-    }
-  }, [dispatch, orderNumber]);
-
   if (!orderInfo) {
     return <Preloader />;
   }
 
-  return (
-    <>
-      <OrderInfoUI orderInfo={orderInfo} />
-    </>
-  );
+  return <OrderInfoUI orderInfo={orderInfo} />;
 };
 
 export default OrderInfo;

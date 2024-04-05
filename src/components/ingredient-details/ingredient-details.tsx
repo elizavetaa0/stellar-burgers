@@ -1,18 +1,25 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useSelector } from '../../services/store';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
-import { useParams } from 'react-router-dom';
-import { Modal } from '../modal';
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from '../../components/ui/order-info/order-info.module.css';
 
 export const IngredientDetails: FC = () => {
   const { ingredients, loading, error } = useSelector(
     (state) => state.ingredients
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [redirected, setRedirected] = useState(false);
+
+  useEffect(() => {
+    if (!loading && !error && ingredients.length > 0 && !redirected) {
+      navigate(`/ingredients/${id}`);
+      setRedirected(true);
+    }
+  }, [loading, error, ingredients, id, navigate, redirected]);
 
   if (loading) {
     return <Preloader />;
@@ -30,21 +37,11 @@ export const IngredientDetails: FC = () => {
     return <div>Нет информации об ингредиенте</div>;
   }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
   return (
     <>
-      {isModalOpen && (
-        <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
-          <IngredientDetailsUI ingredientData={ingredientData} />
-        </Modal>
-      )}
+      <div className={styles.wrap}>
+        <IngredientDetailsUI ingredientData={ingredientData} />
+      </div>
     </>
   );
 };

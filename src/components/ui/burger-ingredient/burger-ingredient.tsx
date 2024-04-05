@@ -1,5 +1,4 @@
 import React, { FC, memo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './burger-ingredient.module.css';
 import {
   Counter,
@@ -13,7 +12,7 @@ import { Modal } from '../../../components/modal';
 import { IngredientDetailsUI } from '../ingredient-details';
 
 export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
-  ({ ingredient, locationState }) => {
+  ({ ingredient }) => {
     const dispatch = useDispatch();
     const { image, price, name, _id } = ingredient;
 

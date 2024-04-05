@@ -7,9 +7,7 @@ import { clearConstructor, createOrder } from '../../slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const constructorItems = useSelector(
-    (state: RootState) => state.order.constructorItems
-  );
+  const constructorItems = useSelector((state) => state.order.constructorItems);
   const orderRequest = useSelector((state) => state.order.orderRequest);
   const orderModalData = useSelector((state) => state.order.orderModalData);
 
@@ -54,15 +52,13 @@ export const BurgerConstructor: FC = () => {
   );
 
   return (
-    <>
-      <BurgerConstructorUI
-        price={price}
-        orderRequest={orderRequest}
-        constructorItems={constructorItems}
-        orderModalData={orderModalData}
-        onOrderClick={onOrderClick}
-        closeOrderModal={closeOrderModal}
-      />
-    </>
+    <BurgerConstructorUI
+      price={price}
+      orderRequest={orderRequest}
+      constructorItems={constructorItems}
+      orderModalData={orderModalData}
+      onOrderClick={onOrderClick}
+      closeOrderModal={closeOrderModal}
+    />
   );
 };
