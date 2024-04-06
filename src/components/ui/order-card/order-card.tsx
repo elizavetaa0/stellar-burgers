@@ -33,7 +33,9 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
     };
 
     const handleClickOutsideModal = (e: MouseEvent) => {
-      handleCloseModal();
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        handleCloseModal();
+      }
     };
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TOrder } from '@utils-types';
 import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
+import { v4 as uuidv4 } from 'uuid';
 
 interface OrderState {
   orderRequest: boolean;
@@ -61,8 +62,10 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     addIngredientToConstructor: (state, action) => {
-      const newIngredient = action.payload;
-
+      const newIngredient = {
+        ...action.payload,
+        uniqueId: uuidv4()
+      };
       if (newIngredient.type === 'bun') {
         state.constructorItems.bun = newIngredient;
       } else {
