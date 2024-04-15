@@ -12,7 +12,7 @@ import {
   updateUserApi,
   forgotPasswordApi,
   resetPasswordApi
-} from '@api';
+} from '../utils/burger-api';
 import { deleteCookie, getCookie, setCookie } from '../utils/cookie';
 
 const saveUserAndTokens = (
@@ -46,7 +46,7 @@ interface AuthState {
   isAuthChecked: boolean;
 }
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   user: loadUserFromLocalStorage(),
   loading: false,
   error: null,
@@ -259,6 +259,18 @@ const authSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to reset password';
+      })
+      .addCase(checkUserAuth.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(checkUserAuth.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(checkUserAuth.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || 'Failed to check user authorization';
       });
   }
 });

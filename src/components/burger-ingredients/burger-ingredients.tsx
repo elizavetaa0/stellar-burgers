@@ -6,7 +6,6 @@ import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { Preloader } from '@ui';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch();
   const buns = useSelector((state) =>
     state.ingredients.ingredients.filter((item) => item.type === 'bun')
   );

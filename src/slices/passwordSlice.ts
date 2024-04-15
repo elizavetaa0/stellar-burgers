@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { forgotPasswordApi, resetPasswordApi } from '@api';
+import { forgotPasswordApi, resetPasswordApi } from '../utils/burger-api';
 
 interface PasswordState {
   loading: boolean;
@@ -7,7 +7,7 @@ interface PasswordState {
   resetSuccess: boolean;
 }
 
-const initialState: PasswordState = {
+export const initialState: PasswordState = {
   loading: false,
   error: null,
   resetSuccess: false

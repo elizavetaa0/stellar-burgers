@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TOrder } from '@utils-types';
-import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
+import {
+  getOrderByNumberApi,
+  getOrdersApi,
+  orderBurgerApi
+} from '../utils/burger-api';
 import { v4 as uuidv4 } from 'uuid';
 
 interface OrderState {
@@ -21,7 +25,7 @@ interface OrderState {
   };
 }
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   currentOrder: null,
   orders: [],
   loading: false,

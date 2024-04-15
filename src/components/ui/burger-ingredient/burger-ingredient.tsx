@@ -52,7 +52,11 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
     };
 
     return (
-      <div className={styles.container} key={_id}>
+      <div
+        className={styles.container}
+        key={_id}
+        data-testid='burger-ingredient'
+      >
         <div className={styles.article} onClick={handleOpenModal}>
           {displayCount > 0 && <Counter count={displayCount} />}
           <img className={styles.img} src={image} alt='картинка ингредиента.' />
@@ -73,6 +77,7 @@ export const BurgerIngredientUI: FC<TBurgerIngredientUIProps> = memo(
             }
           }}
           extraClass={`${styles.addButton} mt-8`}
+          data-testid='add-button'
         />
 
         {isModalOpen && (

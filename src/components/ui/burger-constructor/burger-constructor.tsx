@@ -17,7 +17,6 @@ import {
   isAuthCheckedSelector,
   userDataSelector
 } from '../../../slices/authSlice';
-import { v4 as uuidv4 } from 'uuid';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
@@ -43,7 +42,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const bunElement = selectedBun ? (
-    <div className={`${styles.element} mb-4 mr-4`}>
+    <div
+      className={`${styles.element} mb-4 mr-4`}
+      data-testid='constructor-ingredient'
+    >
       <ConstructorElement
         type='top'
         isLocked
@@ -55,6 +57,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   ) : (
     <div
       className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}
+      data-testid='constructor-bun-top'
     >
       Выберите булки
     </div>
@@ -72,7 +75,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   );
 
   const bottomBunElement = selectedBun ? (
-    <div className={`${styles.element} mt-4 mr-4`}>
+    <div
+      className={`${styles.element} mt-4 mr-4`}
+      data-testid='constructor-ingredient'
+    >
       <ConstructorElement
         type='bottom'
         isLocked
@@ -85,6 +91,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   ) : (
     <div
       className={`${styles.noBuns} ${styles.noBunsBottom} ml-8 mb-4 mr-5 text text_type_main-default`}
+      data-testid='constructor-bun-bottom'
     >
       Выберите булки
     </div>
@@ -105,8 +112,11 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       return;
     }
 
+    console.log('Данные о пользователе:', user);
+
     dispatch(createOrder(ingredientIds))
-      .then(() => {
+      .then((response) => {
+        console.log('Ответ на создание заказа:', response);
         setIsModalOpen(true);
         dispatch(clearConstructor());
       })
@@ -130,18 +140,20 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     setIsModalOpen(false);
     closeOrderModal();
     setError(null);
+    console.log('Модальное окно закрыто:', isModalOpen);
   };
 
   return (
     <section className={styles.burger_constructor}>
       {bunElement}
 
-      <ul className={styles.elements}>
+      <ul className={styles.elements} data-testid='ingredients'>
         {ingredientsList.length > 0 ? (
           ingredientsList
         ) : (
           <div
             className={`${styles.noBuns} ml-8 mb-4 mr-5 text text_type_main-default`}
+            data-testid='constructor-ingredient'
           >
             Выберите начинку
           </div>
@@ -165,13 +177,17 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       </div>
 
       {isModalOpen && orderModalData && (
-        <Modal onClose={closeModal} title={''}>
+        <Modal onClose={closeModal} title={''} data-testid='modal-order'>
           <OrderDetailsUI orderNumber={orderModalData.number} />
         </Modal>
       )}
 
       {orderRequest && (
-        <Modal onClose={closeModal} title={'Оформляем заказ...'}>
+        <Modal
+          onClose={closeModal}
+          title={'Оформляем заказ...'}
+          data-testid='modal-order-process'
+        >
           <Preloader />
         </Modal>
       )}

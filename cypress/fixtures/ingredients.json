@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "1",
+    "name": "Булка 1",
+    "type": "bun",
+    "proteins": 80,
+    "fat": 24,
+    "carbohydrates": 53,
+    "calories": 420,
+    "price": 1225,
+    "image": "",
+    "image_large": "",
+    "image_mobile": ""
+  },
+  {
+    "_id": "2",
+    "name": "Котлета 1",
+    "type": "main",
+    "proteins": 420,
+    "fat": 142,
+    "carbohydrates": 242,
+    "calories": 4242,
+    "price": 424,
+    "image": "",
+    "image_large": "",
+    "image_mobile": ""
+  },
+  {
+    "_id": "3",
+    "name": "Филе 1",
+    "type": "main",
+    "proteins": 44,
+    "fat": 26,
+    "carbohydrates": 85,
+    "calories": 643,
+    "price": 988,
+    "image": "",
+    "image_large": "",
+    "image_mobile": ""
+  },
+  {
+    "_id": "4",
+    "name": "Соус 1",
+    "type": "sauce",
+    "proteins": 30,
+    "fat": 20,
+    "carbohydrates": 40,
+    "calories": 30,
+    "price": 90,
+    "image": "",
+    "image_large": "",
+    "image_mobile": ""
+  }
+]

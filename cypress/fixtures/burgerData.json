@@ -1,0 +1,15 @@
+[{
+  "_id": "643d69a5c3f7b9001cfa093e",
+  "name": "Ingredient 1",
+  "price": 100
+},
+{
+  "_id": "643d69a5c3f7b9001cfa093d",
+  "name": "Ingredient 2",
+  "price": 200
+},
+{
+  "_id": "643d69a5c3f7b9001cfa093d",
+  "name": "Ingredient 3",
+  "price": 150
+}]
