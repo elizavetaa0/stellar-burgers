@@ -4,20 +4,10 @@ import { useDispatch, useSelector } from '../../services/store';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { Preloader } from '@ui';
+import { fetchIngredients } from '../../slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  const buns = useSelector((state) =>
-    state.ingredients.ingredients.filter((item) => item.type === 'bun')
-  );
-  const mains = useSelector((state) =>
-    state.ingredients.ingredients.filter((item) => item.type === 'main')
-  );
-  const sauces = useSelector((state) =>
-    state.ingredients.ingredients.filter((item) => item.type === 'sauce')
-  );
-  const loading = useSelector((state) => state.ingredients.loading);
-  const error = useSelector((state) => state.ingredients.error);
-
+  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
@@ -45,6 +35,22 @@ export const BurgerIngredients: FC = () => {
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
 
+  /*useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);*/
+
+  const buns = useSelector((state) =>
+    state.ingredients.ingredients.filter((item) => item.type === 'bun')
+  );
+  const mains = useSelector((state) =>
+    state.ingredients.ingredients.filter((item) => item.type === 'main')
+  );
+  const sauces = useSelector((state) =>
+    state.ingredients.ingredients.filter((item) => item.type === 'sauce')
+  );
+  const loading = useSelector((state) => state.ingredients.loading);
+  const error = useSelector((state) => state.ingredients.error);
+
   const onTabClick = (tab: string) => {
     setCurrentTab(tab as TTabMode);
     if (tab === 'bun')
@@ -59,10 +65,10 @@ export const BurgerIngredients: FC = () => {
     return <Preloader />;
   }
 
-  if (error) {
+  /*if (error) {
     return <div>Error: {error}</div>;
   }
-
+*/
   return (
     <BurgerIngredientsUI
       currentTab={currentTab}

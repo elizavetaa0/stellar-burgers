@@ -18,6 +18,7 @@ export const IngredientsCategory = forwardRef<
       if (!counters[ingredient._id]) counters[ingredient._id] = 0;
       counters[ingredient._id]++;
     });
+    console.log('burgerConstructor:', burgerConstructor);
     return counters;
   }, [burgerConstructor]);
 

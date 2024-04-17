@@ -23,7 +23,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(checkUserAuth());
-    dispatch(fetchIngredients());
+    //dispatch(fetchIngredients());
   }, []);
 
   return (

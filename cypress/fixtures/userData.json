@@ -1,7 +1,5 @@
 {
   "email": "test@test.ru",
   "name": "testUser",
-  "password": "123456789",
-  "accessToken": "1234567890",
-  "refreshToken": "994f8d91d14a7da72ba13ad6f65e973d389b4aa8ceffc5a3a5e15ad1211d0ce7db9cc90f834f1e61"
+  "isAuthChecked": true
 }

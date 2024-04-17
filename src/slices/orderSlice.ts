@@ -121,6 +121,8 @@ const orderSlice = createSlice({
         state.error = null;
         state.orderModalData = action.payload;
         state.orderRequest = false;
+
+        console.log('Order created successfully:', action.payload);
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.error = action.error.message || 'Failed to create order';

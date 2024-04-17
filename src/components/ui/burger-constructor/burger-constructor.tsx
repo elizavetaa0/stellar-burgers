@@ -38,6 +38,8 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   const orderRequest = useSelector((state) => state.order.orderRequest);
   const orderModalData = useSelector((state) => state.order.orderModalData);
 
+  console.log('orderModalData', orderModalData);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -112,7 +114,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       return;
     }
 
-    console.log('Данные о пользователе:', user);
+    console.log('Запрос на создание заказа отправлен:', ingredientIds);
 
     dispatch(createOrder(ingredientIds))
       .then((response) => {
@@ -140,11 +142,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     setIsModalOpen(false);
     closeOrderModal();
     setError(null);
-    console.log('Модальное окно закрыто:', isModalOpen);
   };
 
   return (
-    <section className={styles.burger_constructor}>
+    <section
+      className={styles.burger_constructor}
+      data-testid='burger-constructor-comp'
+    >
       {bunElement}
 
       <ul className={styles.elements} data-testid='ingredients'>
